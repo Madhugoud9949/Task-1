@@ -1,0 +1,93 @@
+.App {
+  text-align: center;
+  background-color:#3c435f; 
+  min-height: 100vh;
+  height: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+  
+  
+}
+
+
+
+
+.text {
+ margin-top: 0;
+ font-size: 48px;
+ color: #fff;
+ padding-top: 30px;
+ font-weight: 600;
+}
+
+.input-container {
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  
+  margin-bottom: 20px;
+}
+
+.input-container input {
+  padding: 10px;
+  width: 60vw;
+  height: 50px;
+  margin: 0px 0px 0px 40px;
+  border-radius: 6px;
+  border-width: 0;
+}
+
+.input-container .button {
+  padding: 10px ;
+  margin: 0px 0px 0px 40px;
+  background-color: #4a5790;
+  color: #fff; 
+  border-width: 0;
+  font-size: 20px;
+  border-radius: 6px;
+
+}
+
+.task-list {
+  margin-bottom: 20px;
+  margin-top: 0;
+  margin: 0px 40px 0px 40px;
+}
+.task {
+  display: flex;
+  background-color: #4a5790;
+  align-items: center;
+  justify-content: space-between; 
+  padding: 10px;
+  
+  border-radius: 5px;
+  margin-bottom: 15px;
+  color: white;
+  font-size: 32px;
+  
+}
+
+.task .actions {
+  display: flex;
+}
+
+.task button {
+  padding: 5px;
+  cursor: pointer;
+  margin: 10px;
+  background-color: transparent;
+  border-width: 0;
+  font-size: 26px;
+  
+  
+}
+
+.task button:focus {
+  outline: none;
+}
+.delete{
+  color: #ca3c3c;
+}
+.edit{
+  color: #96a0c9;
+}
