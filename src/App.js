@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [taskInput, setTaskInput] = useState('');
-  const [taskCounts, setTaskCounts] = useState({});
+  const [taskChanges, setTaskChanges] = useState({});
+  const [editingIndex, setEditingIndex] = useState(-1);
 
   const handleInputChange = (event) => {
     setTaskInput(event.target.value);
@@ -15,15 +16,13 @@ function App() {
   const addTask = () => {
     const [taskName, count] = taskInput.split(/\s(\d+)$/);
     const newTasks = [...tasks];
-    const newTaskCounts = { ...taskCounts };
-
-    for (let i = 0; i < (count ? parseInt(count) : 1); i++) {
-      newTasks.push(taskName);
-      newTaskCounts[taskName] = (newTaskCounts[taskName] || 0) + 1;
-    }
-
+    newTasks.push(taskName);
     setTasks(newTasks);
-    setTaskCounts(newTaskCounts);
+
+    const newTaskChanges = { ...taskChanges };
+    newTaskChanges[taskName] = 0; 
+    setTaskChanges(newTaskChanges);
+
     setTaskInput('');
   };
 
@@ -33,12 +32,21 @@ function App() {
     setTasks(newTasks);
   };
 
-  const updateTask = (index) => {
+  const updateTask = (index, newName) => {
     const newTasks = [...tasks];
     const taskToUpdate = newTasks[index];
-    newTasks[index] = `${taskToUpdate} (Updated ${taskCounts[taskToUpdate] || 0} Times)`;
+    newTasks[index] = newName;
     setTasks(newTasks);
-    setTaskCounts({ ...taskCounts, [taskToUpdate]: (taskCounts[taskToUpdate] || 0) + 1 });
+
+    const newTaskChanges = { ...taskChanges };
+    newTaskChanges[newName] = (newTaskChanges[newName] || 0) + 1; 
+    setTaskChanges(newTaskChanges);
+
+    setEditingIndex(-1);
+  };
+
+  const startEditing = (index) => {
+    setEditingIndex(index);
   };
 
   return (
@@ -56,16 +64,33 @@ function App() {
       <div className="task-list">
         {tasks.map((task, index) => (
           <div key={index} className="task">
-            <span>{task}</span>
-            <div className="actions">
-            <button onClick={() => updateTask(index)} className='edit'>
-                <FontAwesomeIcon icon={faEdit} />
-              </button>
-              <button onClick={() => deleteTask(index)} className='delete'>
-                <FontAwesomeIcon icon={faTimes} />
-              </button>
-              
-            </div>
+            {editingIndex === index ? (
+              <>
+                <input
+                  type="text"
+                  value={task}
+                  onChange={(event) => setTaskInput(event.target.value)}
+                />
+                <button onClick={() => updateTask(index, task)} className='edit'>
+                  <FontAwesomeIcon icon={faCheck} />
+                </button>
+                <button onClick={() => setEditingIndex(-1)} className='cancel'>
+                  <FontAwesomeIcon icon={faTimes} />
+                </button>
+              </>
+            ) : (
+              <>
+                <span>{task} (Changed {taskChanges[task] || 0} Times)</span>
+                <div className="actions">
+                  <button onClick={() => startEditing(index)} className='edit'>
+                    <FontAwesomeIcon icon={faEdit} />
+                  </button>
+                  <button onClick={() => deleteTask(index)} className='delete'>
+                    <FontAwesomeIcon icon={faTimes} />
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         ))}
       </div>
