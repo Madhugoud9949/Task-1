@@ -16,13 +16,15 @@ function App() {
   const addTask = () => {
     const [taskName, count] = taskInput.split(/\s(\d+)$/);
     const newTasks = [...tasks];
-    newTasks.push(taskName);
-    setTasks(newTasks);
-
     const newTaskChanges = { ...taskChanges };
-    newTaskChanges[taskName] = 0; 
-    setTaskChanges(newTaskChanges);
 
+    for (let i = 0; i < (count ? parseInt(count) : 1); i++) {
+      newTasks.push(taskName);
+      newTaskChanges[taskName] = (newTaskChanges[taskName] || 0); 
+    }
+
+    setTasks(newTasks);
+    setTaskChanges(newTaskChanges);
     setTaskInput('');
   };
 
@@ -34,7 +36,6 @@ function App() {
 
   const updateTask = (index, newName) => {
     const newTasks = [...tasks];
-    const taskToUpdate = newTasks[index];
     newTasks[index] = newName;
     setTasks(newTasks);
 
